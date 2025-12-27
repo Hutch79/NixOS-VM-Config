@@ -11,8 +11,7 @@ if [ "${1:-}" = "--auto" ]; then
 fi
 
 DISK="/dev/sda"
-
-# Enable logging to file after we know where we're going
+REPO_URL="https://github.com/Hutch79/NixOS-VM-Config.git"
 LOG_FILE="/tmp/install.log"
 
 # Start logging to both console and file
@@ -37,9 +36,6 @@ if [ ! -b "$DISK" ]; then
   echo "ERROR: Disk $DISK does not exist or is not a block device"
   exit 1
 fi
-
-# Set default hostname
-HOSTNAME="Nix-Server"
 
 # Validate disk
 if [ ! -b "$DISK" ]; then
@@ -115,7 +111,6 @@ if ! mountpoint -q /mnt; then
 fi
 
 # Prepare configuration
-REPO_URL="https://github.com/Hutch79/Server-NixConfig.git"
 mkdir -p /mnt/etc/nixos
 
 # Try to clone from git repository if network is available
@@ -175,7 +170,6 @@ cp "$LOG_FILE" /mnt/var/log/install.log 2>/dev/null || true
 # Initialize or verify git repository in the installed system
 echo ""
 echo "Setting up git repository for config management..."
-REPO_URL="https://github.com/Hutch79/NixOS-VM-Config.git"
 
 # Use GIT_WORK_TREE and GIT_DIR to work with the mounted filesystem directly
 export GIT_WORK_TREE="/mnt/etc/nixos"
