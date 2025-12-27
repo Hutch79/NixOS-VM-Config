@@ -66,7 +66,7 @@ Flake-based NixOS 25.11 configuration for a secure, stable server VM with rootle
 
 - **System Packages**: git, btop, dysk, traceroute, ncdu, netbird, net-tools
   - See [configuration.nix](configuration.nix) `environment.systemPackages` (line 12) for details
-- **Shell Aliases**: 
+- **Shell Aliases**:
   - See [aliases.nix](aliases.nix) for more details
 
 ### Monitoring
@@ -110,7 +110,7 @@ Update git repository URLs for your fork:
 
 ### Optional Customization
 
-- **[configuration.nix](configuration.nix)**: 
+- **[configuration.nix](configuration.nix)**:
   - Uncomment and configure static networking if needed
   - Enable and configure monitoring (Alloy) with your Prometheus/Loki URLs
   - Adjust auto-upgrade schedule if desired

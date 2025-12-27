@@ -36,7 +36,7 @@ This will:
 
 ## Step 2: Boot and Install
 
-Boot the ISO in your VM. The installation will start automatically, or you can run manually:
+Boot the ISO in your VM. When the system starts, you'll see the installation prompt. To start the installation, run:
 
 ```bash
 sudo /etc/nixos/install-on-iso.sh
