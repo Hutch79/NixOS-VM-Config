@@ -65,10 +65,8 @@ Flake-based NixOS 25.11 configuration for a secure, stable server VM with rootle
 ### Packages and Tools
 
 - **System Packages**: git, btop, dysk, traceroute, ncdu, netbird, net-tools
+  - See [configuration.nix](configuration.nix) `environment.systemPackages` (line 12) for details
 - **Shell Aliases**: 
-  - Nix: `nix-update`, `nix-rebuild`, `nix-pull`, `nix-prune`, `nix-gens`
-  - Navigation: `..`, `...`, `....`, `.....`
-  - Utilities: `mkdir` (auto-create parents), `ll` (ls -alh), `vi/vim` → `nano`, `ports` (netstat), `cls` (clear), `pls` (sudo previous command)
   - See [aliases.nix](aliases.nix) for more details
 
 ### Monitoring
