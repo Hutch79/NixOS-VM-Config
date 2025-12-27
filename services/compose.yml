@@ -1,0 +1,19 @@
+services:
+  periphery:
+    image: ghcr.io/moghtech/komodo-periphery:1.19.5
+    user: 1010:100
+    labels:
+      komodo.skip:
+    restart: always
+    logging:
+      driver: local
+    environment:
+      PERIPHERY_ROOT_DIRECTORY: /home/luna/komodo
+      PERIPHERY_PASSKEYS: 0k3yPlzTvE81mDsouH9pJRMKtWoFsW5G
+      PERIPHERY_INCLUDE_DISK_MOUNTS: /etc/hostname
+    volumes:
+      - /run/user/1010/docker.sock:/var/run/docker.sock
+      - /proc:/proc
+      - /home/luna/komodo:/home/luna/komodo
+    ports:
+      - 8120:8120
