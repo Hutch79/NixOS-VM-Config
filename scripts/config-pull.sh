@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-REPO_URL="https://github.com/Hutch79/Server-NixConfig.git"
+REPO_URL="https://github.com/Hutch79/NixOS-VM-Config.git"
 CONFIG_DIR="/etc/nixos"
 
 # Color codes for output

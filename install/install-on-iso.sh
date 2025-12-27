@@ -175,7 +175,7 @@ cp "$LOG_FILE" /mnt/var/log/install.log 2>/dev/null || true
 # Initialize or verify git repository in the installed system
 echo ""
 echo "Setting up git repository for config management..."
-REPO_URL="https://github.com/Hutch79/Server-NixConfig.git"
+REPO_URL="https://github.com/Hutch79/NixOS-VM-Config.git"
 
 # Use GIT_WORK_TREE and GIT_DIR to work with the mounted filesystem directly
 export GIT_WORK_TREE="/mnt/etc/nixos"
