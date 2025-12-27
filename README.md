@@ -1,6 +1,6 @@
 # NixOS Server Setup
 
-Flake-based NixOS 25.11 configuration for a secure, stable server VM with rootless Docker and automated deployment via custom ISO.
+Flake-based NixOS 25.11 configuration for a secure, stable server VM with rootless Docker and semi automated deployment via custom ISO.
 
 ## Core Configuration
 
@@ -9,15 +9,15 @@ Flake-based NixOS 25.11 configuration for a secure, stable server VM with rootle
 - **NixOS Version**: 25.11 (stable channel)
 - **Experimental Features**: Flakes and nix-command enabled for modern Nix workflows
 - **QEMU Guest**: Enabled for VM optimization
-- **Auto Upgrade**: Weekly on Saturdays at 06:00, allows reboot, uses flake from /etc/nixos
+- **Auto Upgrade**: Weekly on Saturdays at 06:00 (allowes you to fix shit on the weekend ^^'), allows reboot, uses flake from /etc/nixos
 - **Garbage Collection**: Automatic weekly, deletes generations older than 30 days
 - **Store Optimization**: Automatic weekly
 
 ### Docker Setup
 
 - **Rootless Mode**: Enabled for security (no privileged containers)
-- **Custom Networks**: 172.17.0.0/12 and 192.168.0.0/16 address pools (27 usable IP per Network) to avoid oversized networks  
-- **Auto-Prune**: Weekly cleanup of unused containers/images/networks (No volumes will be pruned)
+- **Network size**: 172.17.0.0/12 and 192.168.0.0/16 address pools (27 usable IP per Network) to avoid oversized networks  
+- **Auto-Prune**: Daily cleanup of unused containers/images/networks (No volumes will be pruned)
 - **User Service**: Docker Compose runs as systemd user service for luna user (socket at /run/user/1010/docker.sock)
 - **Live Restore**: Enabled to survive daemon restarts
 
@@ -25,7 +25,6 @@ Flake-based NixOS 25.11 configuration for a secure, stable server VM with rootle
 
 - **SSH**: Key-only authentication, no root login, no password/KbdInteractive auth
 - **Fail2ban**: Enabled (default 5 attempts → 1-hour ban)
-- **Firewall**: Container egress filtering blocks traffic to local networks (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16), CGNat (100.64.0.0/10), link-local (169.254.0.0/16); allows all other outbound and established
 - **Journald**: Persistent logging with 90-day retention and compression
 
 ### User Management
@@ -47,7 +46,11 @@ Flake-based NixOS 25.11 configuration for a secure, stable server VM with rootle
 ### Packages and Tools
 
 - **System Packages**: git, btop, dysk, traceroute, ncdu, netbird, net-tools
-- **Shell Aliases**: Nix commands (update, rebuild, prune, generations), navigation (.. ...), mkdir with parents, ll, vi/vim→nano, ports (netstat), cls
+- **Shell Aliases**: 
+  - Nix: `nix-update`, `nix-rebuild`, `nix-pull`, `nix-prune`, `nix-gens`
+  - Navigation: `..`, `...`, `....`, `.....`
+  - Utilities: `mkdir` (auto-create parents), `ll` (ls -alh), `vi/vim` → `nano`, `ports` (netstat), `cls` (clear), `pls` (sudo previous command)
+  - See `aliases.nix` for more details
 
 ### Monitoring
 
@@ -59,28 +62,4 @@ Flake-based NixOS 25.11 configuration for a secure, stable server VM with rootle
 
 ## Deployment
 
-### Building the ISO
-
-Run from the project root directory:
-
-```bash
-./install/build-iso.sh
-```
-
-Creates `result/iso/nixos-minimal-*.iso` - bootable installer with baked-in configuration.
-
-### Installation
-
-Boot from the ISO - it will automatically detect /dev/sda and install NixOS hands-free. Alternatively, for manual control:
-
-```bash
-sudo ./install/install-on-iso.sh [--auto]
-```
-
-Script handles MBR partitioning, ext4 formatting, config copying, hardware generation, and NixOS installation. Uses /dev/sda. With --auto, runs without prompts and reboots automatically.
-
-### Post-Install
-
-- SSH available immediately after boot
-- Docker services start automatically via user systemd
-- All configurations applied from flake
+See [install/README.md](install/README.md) for detailed installation instructions.
