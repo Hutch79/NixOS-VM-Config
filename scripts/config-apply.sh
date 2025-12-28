@@ -129,23 +129,23 @@ RSYNC_OUTPUT=$(sudo rsync -ai --delete \
   "${RSYNC_EXCLUDES[@]}" \
   "$USER_CONFIG_DIR/" "$SYSTEM_CONFIG_DIR/" 2>&1)
 
+# Restore hardware-configuration.nix before checking for changes
+if [ -n "$HARDWARE_BACKUP" ] && [ -f "$HARDWARE_BACKUP" ]; then
+  sudo cp "$HARDWARE_BACKUP" "$HARDWARE_CONFIG"
+  rm "$HARDWARE_BACKUP"
+fi
+
 # Check if any files were actually changed
 # Look for lines that indicate file changes (not just directory timestamps or permissions)
 FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -E '^(<|>|c)' | wc -l)
 
 if [ "$FILES_CHANGED" -gt 0 ]; then
   echo -e "${GREEN}✓ Configuration files updated${NC}"
+  echo -e "${GREEN}✓ hardware-configuration.nix preserved${NC}"
   CHANGES_APPLIED=true
 else
   echo -e "${GREEN}✓ No changes detected - configurations are already in sync${NC}"
   CHANGES_APPLIED=false
-fi
-
-# Restore hardware-configuration.nix
-if [ -n "$HARDWARE_BACKUP" ] && [ -f "$HARDWARE_BACKUP" ]; then
-  sudo cp "$HARDWARE_BACKUP" "$HARDWARE_CONFIG"
-  rm "$HARDWARE_BACKUP"
-  echo -e "${GREEN}✓ hardware-configuration.nix preserved${NC}"
 fi
 
 # Set proper ownership
