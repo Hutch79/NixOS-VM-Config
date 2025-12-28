@@ -1,16 +1,13 @@
 # Files and folders to ignore when applying from ~/nixos to /etc/nixos
 # One pattern per line (supports wildcards)
 
-# Hardware-specific configuration
+# System-specific
 hardware-configuration.nix
-
-# Network configuration (machine-specific)
 network.nix
-
-# Lock files (system-specific)
 flake.lock
+services
 
-# Installation stuff
+# Installation - Not needed for operation
 install
 
 # Git repository
