@@ -125,7 +125,10 @@ else
 fi
 
 # Run rsync with itemize-changes to track what changed
-RSYNC_OUTPUT=$(sudo rsync -ai --delete \
+# -c uses checksum instead of timestamp/size for change detection
+# -r recursive, -l copy symlinks, -t preserve times (but we check with -c)
+# --delete removes files in dest that aren't in source
+RSYNC_OUTPUT=$(sudo rsync -rlc --delete --itemize-changes \
   "${RSYNC_EXCLUDES[@]}" \
   "$USER_CONFIG_DIR/" "$SYSTEM_CONFIG_DIR/" 2>&1)
 
@@ -135,16 +138,10 @@ if [ -n "$HARDWARE_BACKUP" ] && [ -f "$HARDWARE_BACKUP" ]; then
   rm "$HARDWARE_BACKUP"
 fi
 
-# Debug: Show rsync output
-echo "DEBUG: Rsync output:"
-echo "$RSYNC_OUTPUT"
-echo "DEBUG: End of rsync output"
-
 # Check if any files were actually changed
-# Filter out directory-only changes (lines starting with 'cd')
-FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -vE '^\.(d|$)' | wc -l)
-
-echo "DEBUG: Files changed count: $FILES_CHANGED"
+# rsync itemize output: position 2 shows 'c' for content changes
+# We only care about actual file content changes (position 2 = 'c' or 's')
+FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -E '^.c|^.s|^<|^>' | wc -l)
 
 if [ "$FILES_CHANGED" -gt 0 ]; then
   echo -e "${GREEN}✓ Configuration files updated${NC}"
