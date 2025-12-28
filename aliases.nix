@@ -2,7 +2,7 @@
 
 {
   programs.bash.shellAliases = {
-     nix-update = "cd /etc/nixos && nix flake update && sudo nixos-rebuild switch --flake .";
+     nix-update = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake .";
      nix-rebuild = "cd /etc/nixos && sudo nixos-rebuild switch --flake .";
      nix-pull = "bash /etc/nixos/scripts/config-pull.sh";
      nix-prune = "sudo nix-env -p /nix/var/nix/profiles/system --delete-generations +50 && sudo nix-collect-garbage";
