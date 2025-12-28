@@ -10,8 +10,8 @@
   # networking.interfaces.eth0 = {
   #   ipv4.addresses = [
   #     {
-  #       address = "10.0.69.200";
-  #       prefixLength = 24;
+  #       address = "10.0.1.XXX";
+  #       prefixLength = 16;
   #     }
   #   ];
   # };
