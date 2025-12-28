@@ -140,13 +140,7 @@ fi
 
 # Check if any files were actually changed
 # When using -c (checksum), rsync only shows items in itemize output if they're being transferred
-# Lines starting with: 
-#   >f = file being transferred (updated)
-#   cd = directory being created
-#   *deleting = file being deleted
-# Lines with just dots (like .d....og...) mean metadata only, which -c ignores for actual transfer
-# We want to count only actual file transfers (lines with 'f' in position 2)
-FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -E '^>f|^\*deleting|^<f' | wc -l)
+FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -E '^>f|^\*deleting|^<f' | wc -l || true)
 
 if [ "$FILES_CHANGED" -gt 0 ]; then
   echo -e "${GREEN}✓ Configuration files updated${NC}"
@@ -158,7 +152,7 @@ else
 fi
 
 # Set proper ownership
-sudo chown -R root:root "$SYSTEM_CONFIG_DIR" 2>/dev/null || true
+sudo chown -R root:root "$SYSTEM_CONFIG_DIR"
 
 echo ""
 echo -e "${GREEN}========================================${NC}"
@@ -168,8 +162,19 @@ echo ""
 
 if [ "$CHANGES_APPLIED" = true ]; then
   echo -e "${YELLOW}Configuration changes detected!${NC}"
-  echo "To rebuild the system with new configuration, run:"
-  echo -e "${BLUE}  nix-rebuild${NC}"
+  echo ""
+  read -p "Would you like to rebuild the system now? (yes/no) [no]: " -r REBUILD_CONFIRM
+  REBUILD_CONFIRM=${REBUILD_CONFIRM:-no}
+  
+  if [[ $REBUILD_CONFIRM =~ ^[Yy][Ee][Ss]$ ]]; then
+    echo ""
+    echo "Running nix-rebuild..."
+    bash -c "nix-rebuild"
+  else
+    echo ""
+    echo "Skipping rebuild. To rebuild later, run:"
+    echo -e "${BLUE}  nix-rebuild${NC}"
+  fi
 else
   echo "No rebuild needed - system is already up to date."
 fi
