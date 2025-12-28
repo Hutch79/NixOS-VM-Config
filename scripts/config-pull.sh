@@ -46,6 +46,13 @@ else
     echo "$LOCAL_CHANGES"
     echo ""
     
+    # Show diff of changes
+    echo -e "${BLUE}Changes to be overwritten:${NC}"
+    echo "----------------------------------------"
+    git diff --color=always || git diff
+    echo "----------------------------------------"
+    echo ""
+    
     # Ask for confirmation
     read -p "Overwrite local changes and pull from remote? (yes/no): " -r CONFIRM
     echo ""
