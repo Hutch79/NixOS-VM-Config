@@ -16,8 +16,8 @@ services:
       PERIPHERY_INCLUDE_DISK_MOUNTS: /etc/hostname
     volumes:
       - /run/user/1010/docker.sock:/var/run/docker.sock
-        - /proc:/proc
-        #- /home/luna/komodo:/home/luna/komodo
-        - /srv/komodo:/srv/komodo
+      - /proc:/proc
+      #- /home/luna/komodo:/home/luna/komodo
+      - /srv/komodo:/srv/komodo
     ports:
       - 8120:8120
