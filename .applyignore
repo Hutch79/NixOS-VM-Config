@@ -4,6 +4,9 @@
 # Hardware-specific configuration
 hardware-configuration.nix
 
+# Network configuration (machine-specific)
+network.nix
+
 # Lock files (system-specific)
 flake.lock
 

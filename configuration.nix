@@ -7,6 +7,7 @@
       ./aliases.nix
       ./user-config.nix
       ./monitoring.nix
+      ./network.nix
     ];
 
   environment.systemPackages = with pkgs; [
@@ -21,19 +22,6 @@
   ];
 
   networking.hostName = "Nix-Template";
-
-  # Static network configuration
-  networking.useDHCP = true;
-  # networking.interfaces.eth0 = {
-  #   ipv4.addresses = [
-  #     {
-  #       address = "10.0.69.200";
-  #       prefixLength = 24;
-  #     }
-  #   ];
-  # };
-  # networking.defaultGateway = "10.0.0.1";
-  # networking.nameservers = [ "10.0.0.1" "1.1.1.1" "9.9.9.9" "8.8.8.8" ];
 
   # Automatic updates
   system.autoUpgrade = {
