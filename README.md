@@ -81,9 +81,16 @@ Flake-based NixOS 25.11 configuration for a secure, stable server VM with rootle
 
 See [install/README.md](install/README.md) for detailed installation instructions.
 
-## Customization for Your Setup
+### Customization for Your Setup
 
 Before deploying this configuration, update the following in the repository:
+
+### Hardware Configuration
+
+- **hardware-configuration.nix** - This file contains a minimal default configuration for QEMU VMs. During installation via ISO, the `install-on-iso.sh` script will generate a proper hardware-specific configuration. After initial boot:
+  1. Your auto-generated hardware config will replace the template
+  2. When pulling updates with `nix-pull`, hardware changes are preserved (not overwritten)
+  3. If you need to regenerate hardware config: `sudo nixos-generate-config --root /`
 
 ### User Configuration ([user-config.nix](user-config.nix))
 

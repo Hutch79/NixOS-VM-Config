@@ -2,8 +2,8 @@
 result
 result-*
 
-# Hardware-specific configuration (generated per system)
-hardware-configuration.nix
+# Lock files (should be regenerated per system)
+flake.lock
 
 # Temporary files
 *.swp
