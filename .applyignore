@@ -13,6 +13,7 @@ install
 # Git repository
 .git
 .gitignore
+README.md
 
 # Build outputs
 result
