@@ -1,3 +1,6 @@
+# nix-apply will not copy this file from ~/nixos to /etc/nixos!
+# Network changes therefore need to be done in /etc/nixos/network.nix directly
+
 { config, pkgs, ... }:
 
 {
