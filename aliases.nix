@@ -5,6 +5,7 @@
      nix-update = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake .";
      nix-rebuild = "cd /etc/nixos && sudo nixos-rebuild switch --flake .";
      nix-pull = "bash /etc/nixos/scripts/config-pull.sh";
+     nix-apply = "bash /etc/nixos/scripts/config-apply.sh";
      nix-prune = "sudo nix-env -p /nix/var/nix/profiles/system --delete-generations +50 && sudo nix-collect-garbage";
      nix-gens = "nixos-rebuild list-generations";
 

@@ -48,25 +48,38 @@ The script will:
    - Boot partition: 2GB
    - Root partition: remainder of disk
 2. Format filesystems (ext4)
-3. Clone config from repo or copy from ISO as fallback
+3. Clone config to ~/nixos and copy to /etc/nixos
 4. Generate hardware configuration
 5. Install NixOS with your full configuration
-6. Initialize git repository in /etc/nixos
+6. Initialize git repository in ~/nixos
 7. Reboot automatically
 
 ## Step 3: Post-Boot Setup
 
-After reboot, login as `luna` via SSH. The git repository is already initialized in `/etc/nixos`.
+After reboot, login as `luna` via SSH.
 
-**To pull configuration updates:**
+### Configuration Locations
+
+- **~/nixos** - Git repository for version control (user-writable)
+- **/etc/nixos** - Active system configuration (root-owned)
+
+### Workflow
+
+**To pull and apply configuration updates:**
 
 ```bash
 nix-pull
 ```
 
-This safely updates system configuration from remote, checking for local changes and stashing any modifications before pulling.
+This pulls updates from remote to ~/nixos and automatically applies them to /etc/nixos.
 
-**To apply configuration changes:**
+**To apply local changes (from ~/nixos to /etc/nixos):**
+
+```bash
+nix-apply
+```
+
+**To rebuild the system with current configuration:**
 
 ```bash
 nix-rebuild
