@@ -2,6 +2,9 @@
 result
 result-*
 
+# Hardware-specific configuration (generated per system)
+hardware-configuration.nix
+
 # Temporary files
 *.swp
 *.swo

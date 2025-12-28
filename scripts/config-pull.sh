@@ -18,6 +18,8 @@ echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}NixOS Config Pull - Safe Update${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
+echo "Note: hardware-configuration.nix is hardware-specific and will be ignored"
+echo ""
 
 # Check if we're in a git repository
 if [ ! -d "$CONFIG_DIR/.git" ]; then
@@ -27,6 +29,9 @@ if [ ! -d "$CONFIG_DIR/.git" ]; then
 fi
 
 cd "$CONFIG_DIR"
+
+# Mark directory as safe for git operations (handles permission issues)
+git config --global --add safe.directory "$CONFIG_DIR" 2>/dev/null || true
 
 # Check for local changes
 echo "Checking for local changes..."

@@ -22,7 +22,7 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$PROJECT_ROOT"
 
 # Build the ISO
-echo "Building custom NixOS ISO (this may take 10-15 minutes)..."
+echo "Building custom NixOS ISO..."
 nix build ".#nixosConfigurations.iso.config.system.build.isoImage" -L
 
 # Find the ISO - try direct path first
