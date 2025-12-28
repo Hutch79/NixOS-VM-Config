@@ -135,9 +135,16 @@ if [ -n "$HARDWARE_BACKUP" ] && [ -f "$HARDWARE_BACKUP" ]; then
   rm "$HARDWARE_BACKUP"
 fi
 
+# Debug: Show rsync output
+echo "DEBUG: Rsync output:"
+echo "$RSYNC_OUTPUT"
+echo "DEBUG: End of rsync output"
+
 # Check if any files were actually changed
-# Look for lines that indicate file changes (not just directory timestamps or permissions)
-FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -E '^(<|>|c)' | wc -l)
+# Filter out directory-only changes (lines starting with 'cd')
+FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -vE '^\.(d|$)' | wc -l)
+
+echo "DEBUG: Files changed count: $FILES_CHANGED"
 
 if [ "$FILES_CHANGED" -gt 0 ]; then
   echo -e "${GREEN}✓ Configuration files updated${NC}"
