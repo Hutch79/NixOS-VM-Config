@@ -123,5 +123,17 @@
   # Enable nix flakes and nix-command
   nix.settings.experimental-features = [ "flakes" "nix-command" ];
 
+  # Allow all ports on the firewall.
+  # Needs to be enabled since fail2ban depends on it.
+  networking.firewall = {
+    enable = true;
+    allowedTCPPortRanges = [
+      { from = 1; to = 65535; }
+    ];
+    allowedUDPPortRanges = [
+      { from = 1; to = 65535; }
+    ];
+  };
+
   system.stateVersion = "25.11";
 }
