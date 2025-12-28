@@ -10,14 +10,12 @@ services:
     logging:
       driver: local
     environment:
-      #PERIPHERY_ROOT_DIRECTORY: /home/luna/komodo
-      PERIPHERY_ROOT_DIRECTORY: /srv/komodo
+      PERIPHERY_ROOT_DIRECTORY: /home/luna/komodo
       PERIPHERY_PASSKEYS: What-did-you-expect-this-to-be.-An-actual-secret-key?-Nah-I'm-just-going-to-leave-this-here-for-you-to-change-later.-Or-not.-Your-choice.
       PERIPHERY_INCLUDE_DISK_MOUNTS: /etc/hostname
     volumes:
       - /run/user/1010/docker.sock:/var/run/docker.sock
       - /proc:/proc
-      #- /home/luna/komodo:/home/luna/komodo
-      - /srv/komodo:/srv/komodo
+      - /home/luna/komodo:/home/luna/komodo
     ports:
       - 8120:8120
