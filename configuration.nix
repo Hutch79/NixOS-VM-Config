@@ -116,7 +116,7 @@
     wantedBy = [ "default.target" ];
     serviceConfig = {
       Type = "simple";
-      WorkingDirectory = "/etc/nixos";
+      WorkingDirectory = "/etc/nixos/services";
       ExecStart = "${pkgs.docker-compose}/bin/docker-compose -f compose.yml up";
       ExecStop = "${pkgs.docker-compose}/bin/docker-compose -f compose.yml down";
       Restart = "on-failure";
