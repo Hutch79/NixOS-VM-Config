@@ -158,7 +158,7 @@ else
 fi
 
 # Set proper ownership
-sudo chown -R root:root "$SYSTEM_CONFIG_DIR"
+sudo chown -R root:root "$SYSTEM_CONFIG_DIR" 2>/dev/null || true
 
 echo ""
 echo -e "${GREEN}========================================${NC}"
@@ -173,3 +173,4 @@ if [ "$CHANGES_APPLIED" = true ]; then
 else
   echo "No rebuild needed - system is already up to date."
 fi
+echo ""
