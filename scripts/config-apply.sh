@@ -139,9 +139,14 @@ if [ -n "$HARDWARE_BACKUP" ] && [ -f "$HARDWARE_BACKUP" ]; then
 fi
 
 # Check if any files were actually changed
-# rsync itemize output: position 2 shows 'c' for content changes
-# We only care about actual file content changes (position 2 = 'c' or 's')
-FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -E '^.c|^.s|^<|^>' | wc -l)
+# When using -c (checksum), rsync only shows items in itemize output if they're being transferred
+# Lines starting with: 
+#   >f = file being transferred (updated)
+#   cd = directory being created
+#   *deleting = file being deleted
+# Lines with just dots (like .d....og...) mean metadata only, which -c ignores for actual transfer
+# We want to count only actual file transfers (lines with 'f' in position 2)
+FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -E '^>f|^\*deleting|^<f' | wc -l)
 
 if [ "$FILES_CHANGED" -gt 0 ]; then
   echo -e "${GREEN}✓ Configuration files updated${NC}"
