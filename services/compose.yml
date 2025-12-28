@@ -2,6 +2,8 @@ services:
   periphery:
     image: ghcr.io/moghtech/komodo-periphery:1.19.5
     user: 1010:100
+    group_add:
+      - 313
     labels:
       komodo.skip:
     restart: always
@@ -17,3 +19,4 @@ services:
       - /home/luna/komodo:/home/luna/komodo
     ports:
       - 8120:8120
+    entrypoint: ["sh", "-c", "sleep infinity"]
