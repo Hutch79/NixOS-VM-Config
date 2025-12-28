@@ -1,9 +1,6 @@
 services:
   periphery:
     image: ghcr.io/moghtech/komodo-periphery:1.19.5
-    user: 1010:100
-    group_add:
-      - 131
     labels:
       komodo.skip:
     restart: always
