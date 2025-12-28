@@ -124,9 +124,21 @@ else
   RSYNC_EXCLUDES=(--exclude '.git' --exclude 'hardware-configuration.nix' --exclude 'flake.lock' --exclude 'result')
 fi
 
-sudo rsync -av --delete \
+# Use rsync with itemize-changes to detect what changed
+RSYNC_OUTPUT=$(sudo rsync -aic --delete \
   "${RSYNC_EXCLUDES[@]}" \
-  "$USER_CONFIG_DIR/" "$SYSTEM_CONFIG_DIR/"
+  "$USER_CONFIG_DIR/" "$SYSTEM_CONFIG_DIR/" 2>&1)
+
+# Check if any files were actually changed (excluding directory timestamps)
+FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -v '^\.d' | grep -c '^' || true)
+
+if [ "$FILES_CHANGED" -gt 0 ]; then
+  echo -e "${GREEN}✓ Configuration files updated${NC}"
+  CHANGES_APPLIED=true
+else
+  echo -e "${GREEN}✓ No changes detected - configurations are already in sync${NC}"
+  CHANGES_APPLIED=false
+fi
 
 # Restore hardware-configuration.nix
 if [ -n "$HARDWARE_BACKUP" ] && [ -f "$HARDWARE_BACKUP" ]; then
@@ -143,5 +155,11 @@ echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}✓ Config applied successfully!${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
-echo "To rebuild the system with new configuration, run:"
-echo -e "${BLUE}  nix-rebuild${NC}"
+
+if [ "$CHANGES_APPLIED" = true ]; then
+  echo -e "${YELLOW}Configuration changes detected!${NC}"
+  echo "To rebuild the system with new configuration, run:"
+  echo -e "${BLUE}  nix-rebuild${NC}"
+else
+  echo "No rebuild needed - system is already up to date."
+fi
