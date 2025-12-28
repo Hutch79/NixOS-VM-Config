@@ -18,7 +18,11 @@
           };
         };
 
-        modules = [ ./configuration.nix ];
+        modules = [ 
+          ./configuration.nix 
+          # Read hardware config from outside Git since it should not be tracked by external git
+          (import (builtins.fetchTree { type = "path"; path = ./hardware-configuration.nix; }))
+          ];
       };
 
       # Custom ISO configuration
