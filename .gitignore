@@ -2,9 +2,6 @@
 result
 result-*
 
-# Lock files (should be regenerated per system)
-flake.lock
-
 # Temporary files
 *.swp
 *.swo

@@ -44,8 +44,9 @@ if [ -d "$SYSTEM_CONFIG_DIR" ]; then
   # Find files in /etc/nixos that differ from ~/nixos (excluding hardware-configuration.nix)
   while IFS= read -r file; do
     rel_path="${file#$SYSTEM_CONFIG_DIR/}"
-    # Skip hardware-configuration.nix, .git, and result
+    # Skip hardware-configuration.nix, flake.lock, .git, and result
     if [[ "$rel_path" != "hardware-configuration.nix" ]] && \
+       [[ "$rel_path" != "flake.lock" ]] && \
        [[ "$rel_path" != ".git"* ]] && \
        [[ "$rel_path" != "result"* ]]; then
       source_file="$USER_CONFIG_DIR/$rel_path"
@@ -91,6 +92,7 @@ echo "Copying configuration files..."
 sudo rsync -av --delete \
   --exclude '.git' \
   --exclude 'hardware-configuration.nix' \
+  --exclude 'flake.lock' \
   --exclude 'result' \
   "$USER_CONFIG_DIR/" "$SYSTEM_CONFIG_DIR/"
 
