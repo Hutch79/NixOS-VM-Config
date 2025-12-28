@@ -2,8 +2,9 @@
 result
 result-*
 
-# Lock files (should be regenerated per system)
+# Lock files and ahrdware config (should be regenerated per system)
 flake.lock
+hardware-configuration.nix
 
 # Temporary files
 *.swp
