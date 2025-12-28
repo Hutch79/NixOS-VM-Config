@@ -53,26 +53,13 @@
 
     ║       NixOS Server Setup - Custom Installation ISO        ║
     ║                                                           ║
-    ║  Installation will start automatically on boot.           ║
-    ║  Or run manually:                                         ║
-    ║  $ sudo /etc/nixos/install-on-iso.sh [--auto]             ║
+    ║  To start installation, run:                              ║
+    ║  $ sudo /etc/nixos/install-on-iso.sh                      ║
     ║                                                           ║
     ║  Configuration is already included on this ISO!           ║
     ╚═══════════════════════════════════════════════════════════╝
 
   '';
 
-  # Auto-run the install script on boot for hands-free installation
-  systemd.services.auto-install = {
-    description = "Auto install NixOS";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" "getty.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "/etc/nixos/install-on-iso.sh --auto";
-      StandardOutput = "journal+console";
-      StandardError = "journal+console";
-      User = "root";
-    };
-  };
+
 }
