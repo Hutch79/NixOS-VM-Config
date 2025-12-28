@@ -168,8 +168,8 @@ if [ "$CHANGES_APPLIED" = true ]; then
   
   if [[ $REBUILD_CONFIRM =~ ^[Yy][Ee][Ss]$ ]]; then
     echo ""
-    echo "Running nix-rebuild..."
-    bash -c "nix-rebuild"
+    echo "Running nixos-rebuild switch..."
+    cd "$SYSTEM_CONFIG_DIR" && sudo nixos-rebuild switch --flake .
   else
     echo ""
     echo "Skipping rebuild. To rebuild later, run:"
