@@ -43,14 +43,10 @@
     flake = "/etc/nixos";
   };
 
-  services.qemuGuest.enable = true;
-  
-  # Boot configuration
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-
   # Set keyboard layout to Swiss German (for console)
   console.keyMap = "sg";
+
+  services.fail2ban.enable = true;
 
   services.openssh = {
     enable = true;
@@ -59,8 +55,6 @@
     settings.KbdInteractiveAuthentication = false;
     settings.PermitRootLogin = "no";
   };
-
-  services.fail2ban.enable = true;
 
   # System logging with persistent storage
   services.journald = {
@@ -71,9 +65,6 @@
       StandardOutput=journal
     '';
   };
-
-  # Enable nix flakes and nix-command
-  nix.settings.experimental-features = [ "flakes" "nix-command" ];
 
   # Automatic garbage collection
   nix.gc = {
@@ -136,6 +127,15 @@
       DOCKER_HOST = "unix:///run/user/1010/docker.sock";
     };
   };
+
+  services.qemuGuest.enable = true;
+  
+  # Boot configuration
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/sda";
+
+  # Enable nix flakes and nix-command
+  nix.settings.experimental-features = [ "flakes" "nix-command" ];
 
   system.stateVersion = "25.11";
 }
