@@ -7,7 +7,7 @@
       ./aliases.nix
       ./user-config.nix
       ./monitoring.nix
-      ./network.nix
+      ./system-config.nix
     ];
 
   environment.systemPackages = with pkgs; [
@@ -20,8 +20,6 @@
     net-tools
     cloud-utils
   ];
-
-  networking.hostName = "Nix-Template";
 
   # Automatic updates
   system.autoUpgrade = {

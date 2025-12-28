@@ -4,6 +4,8 @@
 { config, pkgs, ... }:
 
 {
+  networking.hostName = "Nix-Template";
+
   networking.useDHCP = true;
   # networking.interfaces.eth0 = {
   #   ipv4.addresses = [
@@ -13,6 +15,6 @@
   #     }
   #   ];
   # };
-  # networking.defaultGateway = "10.0.0.1";
+  # networking.defaultGateway.address = "10.0.0.1";
   # networking.nameservers = [ "10.0.0.1" "1.1.1.1" "9.9.9.9" "8.8.8.8" ];
 }

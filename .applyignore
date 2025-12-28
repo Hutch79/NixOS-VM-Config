@@ -3,9 +3,10 @@
 
 # System-specific
 hardware-configuration.nix
-network.nix
+system-config.nix
 flake.lock
 services
+flake.nix
 
 # Installation - Not needed for operation
 install
