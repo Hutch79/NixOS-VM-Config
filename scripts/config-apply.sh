@@ -124,13 +124,14 @@ else
   RSYNC_EXCLUDES=(--exclude '.git' --exclude 'hardware-configuration.nix' --exclude 'flake.lock' --exclude 'result')
 fi
 
-# Use rsync with itemize-changes to detect what changed
-RSYNC_OUTPUT=$(sudo rsync -aic --delete \
+# Run rsync with itemize-changes to track what changed
+RSYNC_OUTPUT=$(sudo rsync -ai --delete \
   "${RSYNC_EXCLUDES[@]}" \
   "$USER_CONFIG_DIR/" "$SYSTEM_CONFIG_DIR/" 2>&1)
 
-# Check if any files were actually changed (excluding directory timestamps)
-FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -v '^\.d' | grep -c '^' || true)
+# Check if any files were actually changed
+# Look for lines that indicate file changes (not just directory timestamps or permissions)
+FILES_CHANGED=$(echo "$RSYNC_OUTPUT" | grep -E '^(<|>|c)' | wc -l)
 
 if [ "$FILES_CHANGED" -gt 0 ]; then
   echo -e "${GREEN}✓ Configuration files updated${NC}"
