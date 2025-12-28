@@ -30,7 +30,7 @@ cd "$CONFIG_DIR"
 
 # Check for local changes
 echo "Checking for local changes..."
-LOCAL_CHANGES=$(git status --porcelain)
+LOCAL_CHANGES=$(sudo git status --porcelain)
 
 if [ -n "$LOCAL_CHANGES" ]; then
   echo -e "${YELLOW}⚠ Local changes detected!${NC}"
@@ -51,23 +51,23 @@ if [ -n "$LOCAL_CHANGES" ]; then
   # Stash local changes with timestamp
   STASH_NAME="auto-stash-$(date '+%Y-%m-%d_%H-%M-%S')"
   echo "Stashing local changes as: $STASH_NAME"
-  git stash push -m "$STASH_NAME"
+  sudo git stash push -m "$STASH_NAME"
   echo -e "${GREEN}✓ Local changes stashed${NC}"
 fi
 
 # Fetch from remote
 echo ""
 echo "Fetching from remote repository..."
-git fetch origin || {
+sudo git fetch origin || {
   echo -e "${RED}ERROR: Failed to fetch from remote${NC}"
   exit 1
 }
 
 # Check if main/master branch exists on remote
 BRANCH="main"
-if ! git rev-parse --verify origin/$BRANCH >/dev/null 2>&1; then
+if ! sudo git rev-parse --verify origin/$BRANCH >/dev/null 2>&1; then
   BRANCH="master"
-  if ! git rev-parse --verify origin/$BRANCH >/dev/null 2>&1; then
+  if ! sudo git rev-parse --verify origin/$BRANCH >/dev/null 2>&1; then
     echo -e "${RED}ERROR: Could not find main or master branch on remote${NC}"
     exit 1
   fi
@@ -77,7 +77,7 @@ echo ""
 echo -e "${BLUE}Pulling from remote branch: $BRANCH${NC}"
 
 # Force reset to remote branch - overwrite local history to match remote exactly
-git reset --hard origin/$BRANCH
+sudo git reset --hard origin/$BRANCH
 echo -e "${GREEN}✓ Local history reset to match remote${NC}"
 echo ""
 

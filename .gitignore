@@ -2,6 +2,9 @@
 result
 result-*
 
+flake.lock
+hardware-configuration.nix
+
 # Temporary files
 *.swp
 *.swo
