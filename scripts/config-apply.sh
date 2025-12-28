@@ -6,6 +6,7 @@ set -euo pipefail
 
 USER_CONFIG_DIR="$HOME/nixos"
 SYSTEM_CONFIG_DIR="/etc/nixos"
+APPLYIGNORE_FILE="$USER_CONFIG_DIR/.applyignore"
 
 # Color codes for output
 RED='\033[0;31m'
@@ -39,16 +40,36 @@ echo ""
 
 # Check what files will be overwritten
 echo "Checking for files that will be overwritten..."
+
+# Build exclusion list from .applyignore
+EXCLUDE_PATTERNS=()
+if [ -f "$APPLYIGNORE_FILE" ]; then
+  while IFS= read -r pattern; do
+    # Skip empty lines and comments
+    [[ -z "$pattern" || "$pattern" =~ ^# ]] && continue
+    EXCLUDE_PATTERNS+=("$pattern")
+  done < "$APPLYIGNORE_FILE"
+else
+  echo -e "${YELLOW}Warning: .applyignore not found, using default exclusions${NC}"
+  EXCLUDE_PATTERNS=("hardware-configuration.nix" "flake.lock" ".git" "result")
+fi
+
 FILES_TO_OVERWRITE=""
 if [ -d "$SYSTEM_CONFIG_DIR" ]; then
-  # Find files in /etc/nixos that differ from ~/nixos (excluding hardware-configuration.nix)
+  # Find files in /etc/nixos that differ from ~/nixos
   while IFS= read -r file; do
     rel_path="${file#$SYSTEM_CONFIG_DIR/}"
-    # Skip hardware-configuration.nix, flake.lock, .git, and result
-    if [[ "$rel_path" != "hardware-configuration.nix" ]] && \
-       [[ "$rel_path" != "flake.lock" ]] && \
-       [[ "$rel_path" != ".git"* ]] && \
-       [[ "$rel_path" != "result"* ]]; then
+    
+    # Check if file matches any exclusion pattern
+    should_skip=false
+    for pattern in "${EXCLUDE_PATTERNS[@]}"; do
+      if [[ "$rel_path" == $pattern* ]] || [[ "$rel_path" == *"/$pattern"* ]] || [[ "$rel_path" == "$pattern" ]]; then
+        should_skip=true
+        break
+      fi
+    done
+    
+    if [ "$should_skip" = false ]; then
       source_file="$USER_CONFIG_DIR/$rel_path"
       if [ -f "$source_file" ]; then
         # Compare files
@@ -89,11 +110,22 @@ fi
 
 # Copy all files from user config to system config
 echo "Copying configuration files..."
+
+# Build rsync exclude arguments from .applyignore
+RSYNC_EXCLUDES=()
+if [ -f "$APPLYIGNORE_FILE" ]; then
+  while IFS= read -r pattern; do
+    # Skip empty lines and comments
+    [[ -z "$pattern" || "$pattern" =~ ^# ]] && continue
+    RSYNC_EXCLUDES+=(--exclude "$pattern")
+  done < "$APPLYIGNORE_FILE"
+else
+  # Default exclusions if .applyignore doesn't exist
+  RSYNC_EXCLUDES=(--exclude '.git' --exclude 'hardware-configuration.nix' --exclude 'flake.lock' --exclude 'result')
+fi
+
 sudo rsync -av --delete \
-  --exclude '.git' \
-  --exclude 'hardware-configuration.nix' \
-  --exclude 'flake.lock' \
-  --exclude 'result' \
+  "${RSYNC_EXCLUDES[@]}" \
   "$USER_CONFIG_DIR/" "$SYSTEM_CONFIG_DIR/"
 
 # Restore hardware-configuration.nix

@@ -1,0 +1,28 @@
+# Files and folders to ignore when applying from ~/nixos to /etc/nixos
+# One pattern per line (supports wildcards)
+
+# Hardware-specific configuration
+hardware-configuration.nix
+
+# Lock files (system-specific)
+flake.lock
+
+# Installation stuff
+install
+
+# Git repository
+.git
+.gitignore
+
+# Build outputs
+result
+result-*
+
+# Apply ignore file itself
+.applyignore
+
+# Temporary files
+*.swp
+*.swo
+*~
+.DS_Store
