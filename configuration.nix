@@ -81,7 +81,8 @@
     daemon.settings = {
       live-restore = true;
       default-address-pools = [
-        { base = "172.17.0.0/12"; size = 27; }
+        # 172.18.0.0/16 through 172.31.255.255 can be used for manual networks
+        { base = "172.17.0.0/16"; size = 27; }
         { base = "192.168.0.0/16"; size = 27; }
       ];
     };
