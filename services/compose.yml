@@ -11,7 +11,7 @@ services:
       PERIPHERY_PASSKEYS: ${PERIPHERY_PASSKEYS}
       PERIPHERY_INCLUDE_DISK_MOUNTS: /etc/hostname
     volumes:
-      - /run/user/1010/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
       - /proc:/proc
       - ${PERIPHERY_ROOT_DIRECTORY}:${PERIPHERY_ROOT_DIRECTORY}
     ports:
@@ -26,7 +26,7 @@ services:
       - NEWT_ID=${NEWT_ID}
       - NEWT_SECRET=${NEWT_SECRET}
     volumes:
-      - /run/user/1010/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
 networks:
   proxy:

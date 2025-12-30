@@ -65,14 +65,10 @@
     dates = "weekly";
   };
 
-  # Docker + docker-compose (rootless mode)
+  # Docker + docker-compose (rootful mode)
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
     autoPrune = {
       enable = true;
       dates = "daily";
@@ -96,11 +92,11 @@
     };
   };
 
-  # User-level systemd service for luna to auto-start start docker stack
-  systemd.user.services.docker-compose = {
+  # System-level systemd service to auto-start docker stack
+  systemd.services.docker-compose = {
     description = "Auto start docker stack";
     after = [ "docker.service" ];
-    wantedBy = [ "default.target" ];
+    wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "simple";
       WorkingDirectory = "/etc/nixos/services";
@@ -108,10 +104,6 @@
       ExecStop = "${pkgs.docker-compose}/bin/docker-compose -f compose.yml down";
       Restart = "on-failure";
       RestartSec = "10s";
-    };
-    environment = {
-      HOME = "/home/luna";
-      DOCKER_HOST = "unix:///run/user/1010/docker.sock";
     };
   };
 
