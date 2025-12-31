@@ -28,9 +28,12 @@ services:
       - DOCKER_SOCKET=/var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - proxy
 
 networks:
   proxy:
+    name: proxy
     driver: bridge
     ipam:
       config:
