@@ -25,6 +25,7 @@ services:
       - PANGOLIN_ENDPOINT=${NEWT_PANGOLIN_ENDPOINT}
       - NEWT_ID=${NEWT_ID}
       - NEWT_SECRET=${NEWT_SECRET}
+      - DOCKER_SOCKET=/var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
