@@ -5,7 +5,6 @@
     isNormalUser = true;
     uid = 1010;
     description = "Luna";
-    linger = true;
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     hashedPassword = "$6$NXnztz57WwSU9sR1$LG/7hDdP9q6NQNIjTjtyNoEfpkxcGH.yWV2fW.FAvAyjKoCapZ6DfO4TPe.B9SfxHj6llG8FZL8v1jFuxPklf0";
     openssh.authorizedKeys.keys = [
