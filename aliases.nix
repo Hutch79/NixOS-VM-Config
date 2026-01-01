@@ -9,6 +9,8 @@
      nix-prune = "sudo nix-env -p /nix/var/nix/profiles/system --delete-generations +50 && sudo nix-collect-garbage";
      nix-gens = "nixos-rebuild list-generations";
 
+     space-scan = "ncdu --exclude '/var/lib/docker' /";
+
      pls="sudo $(fc -ln -1)";  # Executes last command with sudo
 
      flatpack="flatpak";
