@@ -110,6 +110,15 @@
   services.qemuGuest.enable = true;
   networking.wireguard.enable = true;
 
+  # NFS Server configuration
+  services.nfs.server = {
+    enable = true;
+    exports = ''
+      /home/luna/komodo 10.0.1.17(rw,sync,no_subtree_check)
+      /home/luna/komodo 10.1.0.100(rw,sync,no_subtree_check)
+    '';
+  };
+
   # Boot configuration
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
