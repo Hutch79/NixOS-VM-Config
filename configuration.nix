@@ -114,8 +114,8 @@
   services.nfs.server = {
     enable = true;
     exports = ''
-      /home/luna/komodo 10.0.1.17(rw,sync,no_subtree_check)
-      /home/luna/komodo 10.1.0.100(rw,sync,no_subtree_check)
+      /home/luna/komodo 10.0.1.17(rw,sync,no_subtree_check,anonuid=0,anongid=0)
+      /home/luna/komodo 10.1.0.100(rw,sync,no_subtree_check,anonuid=0,anongid=0)
     '';
   };
 
