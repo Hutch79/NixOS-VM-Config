@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, pkgsUnstable, ... }:
 
 {
   imports =
@@ -16,7 +16,6 @@
     dysk
     traceroute
     ncdu
-    netbird
     net-tools
     cloud-utils
   ];
@@ -33,6 +32,11 @@
   console.keyMap = "sg";
 
   services.fail2ban.enable = true;
+
+  services.netbird = {
+    enable = true;
+    package = pkgsUnstable.netbird;
+  };
 
   services.openssh = {
     enable = true;
